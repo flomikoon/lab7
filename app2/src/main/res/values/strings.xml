@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">app2</string>
+    <string name="loc">im loc: %s</string>
+</resources>
