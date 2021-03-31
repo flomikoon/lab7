@@ -27,6 +27,7 @@ class DownloadService : Service() {
         val url = intent?.getStringExtra("URL")
         if (url != null){
             job = CoroutineScope(Dispatchers.IO).launch {
+                println(Thread.currentThread().name)
                val place =  downloadImage(url)?.saveImage()
                 Log.i("Downloader" , "Place: $place")
                 sendBroadcast(Intent("com.example.lab7.DOWNLOADER").apply {

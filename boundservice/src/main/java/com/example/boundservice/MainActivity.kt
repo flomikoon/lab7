@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
 
         messenger = Messenger(ResponseHandler(this))
 
-        binding.requetService.setOnClickListener {
+        binding.boundService.setOnClickListener {
 
             val message = Message.obtain().apply {
                 obj = "https://i.ibb.co/8cvn9LZ/dinosaur-5995333-1920.png"
