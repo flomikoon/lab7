@@ -57,10 +57,6 @@ class DownloadService : Service() {
         }
         return File(filesDir , filename).absolutePath
     }
-
-    override fun onDestroy() {
-        job.cancel()
-    }
 }
 
 class MainActivity : AppCompatActivity() {
