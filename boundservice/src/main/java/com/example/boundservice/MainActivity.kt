@@ -57,7 +57,7 @@ class ResponseHandler(activity: MainActivity): Handler(activity.mainLooper){
 
     override fun handleMessage(msg: Message) {
         if(msg.what == TASK.PLACE){
-            Log.d("ResponseHandler" , "Save msg incoming")
+            Log.i("ResponseHandler" , "Save msg incoming")
 
             val  place = msg.obj?: return
 
@@ -70,7 +70,7 @@ class ResponseHandler(activity: MainActivity): Handler(activity.mainLooper){
 class DownloadService : Service() {
     private lateinit var job: Job
 
-    fun savesImage(url: String , saver: suspend (String) -> Unit){
+    fun savesImage(url: String , saver: (String) -> Unit){
         job = CoroutineScope(Dispatchers.IO).launch {
             downloadImage(url)?.saveImage().let {
                 if (it != null) {
