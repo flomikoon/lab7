@@ -10,8 +10,6 @@ import android.graphics.BitmapFactory
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import androidx.annotation.RestrictTo
-import androidx.core.content.pm.ShortcutInfoCompatSaver
 import com.example.boundservice.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,20 +20,15 @@ import java.io.InputStream
 import java.lang.Exception
 import java.lang.ref.WeakReference
 import java.net.URL
-import kotlin.coroutines.CoroutineContext
 
-class TASK{
-    companion object{
-        const val DOWNLOAD = 0
-        const val PLACE = 1
-    }
-}
+const val DOWNLOAD = 0
+const val PLACE = 1
 
 class DownloaderHandler(service: DownloadService) : Handler(service.mainLooper){
     private val serviceReference = WeakReference(service)
 
     override fun handleMessage(msg: Message) {
-        if (msg.what == TASK.DOWNLOAD){
+        if (msg.what == DOWNLOAD){
             Log.i("DownloaderHandler" , "Download msg")
 
             val url = msg.obj ?: return
@@ -45,7 +38,7 @@ class DownloaderHandler(service: DownloadService) : Handler(service.mainLooper){
                 Log.i("DownloaderHandler" , "PLACE: $it")
                 replyTo.send(Message.obtain().apply {
                     obj = it
-                    what = TASK.PLACE
+                    what = PLACE
                 })
             }
         } else super.handleMessage(msg)
@@ -56,10 +49,11 @@ class ResponseHandler(activity: MainActivity): Handler(activity.mainLooper){
     private val activityRef = WeakReference(activity)
 
     override fun handleMessage(msg: Message) {
-        if(msg.what == TASK.PLACE){
+        if(msg.what == PLACE){
             Log.i("ResponseHandler" , "Save msg incoming")
 
             val  place = msg.obj?: return
+
 
             activityRef.get()?.changeText(place as String)?: return
         } else super.handleMessage(msg)
@@ -164,7 +158,7 @@ class MainActivity : AppCompatActivity() {
             val message = Message.obtain().apply {
                 obj = "https://i.ibb.co/8cvn9LZ/dinosaur-5995333-1920.png"
                 replyTo = messenger
-                what = TASK.DOWNLOAD
+                what = DOWNLOAD
             }
 
             try {
